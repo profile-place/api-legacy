@@ -9,6 +9,14 @@ app.use(express.json());
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
+
+// Handle errors (not found, whatever)
+app.use((req, res) => {
+	res.status(404).json({
+		message: "Not found"
+	});
+});
+
 readdir(join(__dirname, 'routers')).then(async versions => {
 	for (const version of versions) {
 		const router = require(`./routers/${version}`);
