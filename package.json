@@ -1,0 +1,28 @@
+{
+  "name": "profile.place-api",
+  "version": "1.0.0",
+  "description": "API for profile.place",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/profile-place/api.git"
+  },
+  "author": "profile.place",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/profile-place/api/issues"
+  },
+  "homepage": "https://github.com/profile-place/api#readme",
+  "devDependencies": {
+    "@aero/eslint-config": "^1.0.5",
+    "eslint": "^7.4.0"
+  },
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "loggaby": "^1.0.1"
+  }
+}
