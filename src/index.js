@@ -11,11 +11,15 @@ const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
 
 // Handle errors (not found, whatever)
-app.use((req, res) => {
+// sammy this doesn't work
+/* app.use((req, res) => {
 	res.status(404).json({
 		message: 'Not found'
 	});
-});
+});*/
+
+// this should use the same readdir code but this works
+app.get('/dccb', require('./oauth/discord').callback);
 
 readdir(join(__dirname, 'routers')).then(async versions => {
 	for (const version of versions) {
