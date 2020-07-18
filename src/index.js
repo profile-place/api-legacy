@@ -13,7 +13,7 @@ const { join } = require('path').posix;
 // Handle errors (not found, whatever)
 app.use((req, res) => {
 	res.status(404).json({
-		message: "Not found"
+		message: 'Not found'
 	});
 });
 
