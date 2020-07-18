@@ -1,4 +1,5 @@
 // i hate eslint so much -Cyber
+// same -sammy
 /* eslint-disable camelcase */
 const axios = require('axios');
 const qs = require('querystring');
@@ -27,6 +28,6 @@ module.exports = {
 			url: 'https://discord.com/api/users/@me',
 			headers: { Authorization: `Bearer ${tokens.data.access_token}` }
 		});
-		res.status(200).json({ msg: `Hello ${user.data.username}` });
+		res.status(200).json({ ...user.data });
 	}
 };
