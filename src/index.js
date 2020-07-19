@@ -10,9 +10,6 @@ app.use(express.json());
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
 
-// this should use the same readdir code but this works
-app.get('/dccb', require('./oauth2/discord').callback);
-
 readdir(join(__dirname, 'routers')).then(async versions => {
 	for (const version of versions) {
 		const router = require(`./routers/${version}`);

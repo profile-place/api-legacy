@@ -18,7 +18,7 @@ module.exports = {
 			}, 'form')
 			.json();
 
-		const user = centra('https://discord.com/api/users/@me')
+		const user = await centra('https://discord.com/api/users/@me')
 			.header('Authorization', `Bearer ${tokens.access_token}`)
 			.json();
 
