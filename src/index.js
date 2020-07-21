@@ -1,11 +1,20 @@
 const express = require('express');
 const Loggaby = require('loggaby');
+const { MongoClient } = require('mongodb');
 const logger = new Loggaby();
 require('dotenv').config();
 const port = parseInt(process.env.API_PORT);
 
 const app = express();
 app.use(express.json());
+
+MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
+	if (err) {
+		logger.error(`mongo connection failed: ${err}`);
+		process.exit();
+	}
+	app.db = client.db('profileplace');
+});
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
