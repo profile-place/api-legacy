@@ -13,7 +13,8 @@ MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewU
 		logger.error(`mongo connection failed: ${err}`);
 		process.exit();
 	}
-	app.db = client.db('profileplace');
+	logger.log('connected');
+	app.locals.db = client.db('profileplace');
 });
 
 const { readdir } = require('fs').promises;
