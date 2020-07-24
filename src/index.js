@@ -1,5 +1,6 @@
 const express = require('express');
 const Loggaby = require('loggaby');
+const cookieParser = require('cookie-parser');
 const { MongoClient } = require('mongodb');
 const logger = new Loggaby();
 require('dotenv').config();
@@ -7,13 +8,14 @@ const port = parseInt(process.env.API_PORT);
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser());
 
 MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
 	if (err) {
 		logger.error(`mongo connection failed: ${err}`);
 		process.exit();
 	}
-	logger.log('connected');
+	logger.log('connected to database');
 	app.locals.db = client.db('profileplace');
 });
 
