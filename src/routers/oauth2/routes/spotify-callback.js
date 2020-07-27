@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const centra = require('@aero/centra');
 
 module.exports = {
@@ -16,7 +15,7 @@ module.exports = {
 			.header('Authorization', `Bearer ${tokens.access_token}`)
 			.json();
 
-		res.status(200).json({ ...user });
+		res.status(200).json(user);
 	},
 	method: 'get'
 };

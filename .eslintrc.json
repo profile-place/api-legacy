@@ -1,3 +1,6 @@
 {
-    "extends": "@aero/eslint-config"
+    "extends": "@aero/eslint-config",
+    "rules": {
+        "camelcase": "off"
+    }
 }
