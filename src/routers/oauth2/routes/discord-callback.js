@@ -2,9 +2,7 @@
 const centra = require('@aero/centra');
 
 module.exports = {
-	name: 'discord',
-	authUri: `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_ID}&redirect_uri=${encodeURIComponent(process.env.DISCORD_REDIRECT_URI)}&response_type=code&scope=identify`,
-	callback: async (req, res) => {
+	run: async (req, res) => {
 		const tokens = await centra('https://discord.com/api/oauth2/token', 'POST')
 			.body({
 				client_id: process.env.DISCORD_ID,
@@ -16,10 +14,11 @@ module.exports = {
 			}, 'form')
 			.json();
 
-		const user = centra('https://discord.com/api/users/@me')
+		const user = await centra('https://discord.com/api/users/@me')
 			.header('Authorization', `Bearer ${tokens.access_token}`)
 			.json();
 
 		res.status(200).json({ ...user });
-	}
+	},
+	method: 'get'
 };
