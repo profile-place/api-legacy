@@ -1,5 +1,3 @@
-// i hate eslint so much -Cyber
-// same -sammy
 /* eslint-disable camelcase */
 const centra = require('@aero/centra');
 
