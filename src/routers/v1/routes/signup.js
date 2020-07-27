@@ -12,7 +12,7 @@ async function run(req, res) {
     const email = decodeBase64(req.body.email)
     const pass = await argon2.hash(decodeBase64(req.body.pass))
     req.app.locals.db.collection('user').insertOne({
-        id: req.app.locals.snowflakeWorker.generate(),
+        _id: req.app.locals.snowflakeWorker.generate(),
         email: email,
         password: pass,
         connections: []
