@@ -1,6 +1,7 @@
 const express = require('express');
 const Loggaby = require('loggaby');
 const cookieParser = require('cookie-parser');
+const snowflakey = require('snowflakey')
 const { MongoClient } = require('mongodb');
 const logger = new Loggaby();
 require('dotenv').config();
@@ -18,6 +19,14 @@ MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewU
 	logger.log('connected to database');
 	app.locals.db = client.db('profileplace');
 });
+app.locals.snowflakeWorker = new snowflakey.Worker({
+	epoch: 1577836800,
+	workerId: 28,
+	processId: process.pid,
+	workerBits: 8,
+	processBits: 0,
+	incrementBits: 14
+})
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
