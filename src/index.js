@@ -1,7 +1,7 @@
 const express = require('express');
 const Loggaby = require('loggaby');
 const cookieParser = require('cookie-parser');
-const snowflakey = require('snowflakey')
+const snowflakey = require('snowflakey');
 const { MongoClient } = require('mongodb');
 const logger = new Loggaby();
 require('dotenv').config();
@@ -26,7 +26,7 @@ app.locals.snowflakeWorker = new snowflakey.Worker({
 	workerBits: 8,
 	processBits: 0,
 	incrementBits: 14
-})
+});
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
