@@ -3,6 +3,7 @@ const Loggaby = require('loggaby');
 const cookieParser = require('cookie-parser');
 const snowflakey = require('snowflakey');
 const { MongoClient } = require('mongodb');
+const { constants } = require('../lib/util');
 const logger = new Loggaby();
 require('dotenv').config();
 const port = parseInt(process.env.API_PORT);
@@ -20,7 +21,7 @@ MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewU
 	app.locals.db = client.db('profileplace');
 });
 app.locals.snowflakeWorker = new snowflakey.Worker({
-	epoch: 1577836800,
+	epoch: constants.epoch,
 	workerId: 28,
 	processId: process.pid,
 	workerBits: 8,
