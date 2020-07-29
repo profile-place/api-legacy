@@ -13,12 +13,19 @@ async function run(req, res) {
 		});
 	}
 
-	const pass = await argon2.hash(b64.decode(req.body.pass));
+	const exists = await req.app.locals.db.collection('user').findOne({ email: email });
+	if (exists) {
+		return res.status(400).json({
+			message: 'email address already in use'
+		});
+	}
+
+	const password = await argon2.hash(b64.decode(req.body.pass));
 
 	req.app.locals.db.collection('user').insertOne({
 		_id: req.app.locals.snowflakeWorker.generate(),
-		email: email,
-		password: pass,
+		email,
+		password,
 		connections: []
 	});
 
