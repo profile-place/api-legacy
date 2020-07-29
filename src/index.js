@@ -2,6 +2,7 @@ const express = require('express');
 const Loggaby = require('loggaby');
 const cookieParser = require('cookie-parser');
 const snowflakey = require('snowflakey');
+const redis = require('redis');
 const { MongoClient } = require('mongodb');
 const { constants } = require('../lib/util');
 const logger = new Loggaby();
@@ -28,6 +29,9 @@ app.locals.snowflakeWorker = new snowflakey.Worker({
 	processBits: 0,
 	incrementBits: 14
 });
+app.locals.redis = redis.createClient();
+
+app.locals.redis.on('ready', () => logger.log('connected to redis'));
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;

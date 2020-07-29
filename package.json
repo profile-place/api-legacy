@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "loggaby": "^1.0.1",
     "mongodb": "^3.5.9",
+    "redis": "^3.0.2",
     "snowflakey": "^0.2.0"
   },
   "devDependencies": {
