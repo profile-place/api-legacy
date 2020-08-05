@@ -36,11 +36,6 @@ app.locals.redis.on('ready', () => logger.log('connected to redis'));
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
 
-// if this is not removed in the actual commit, im bad -Cyber
-app.get('/', (req, res) => {
-	res.cookie('access_token', 'NjY4NzU5OTQyMDA2ODI2NTk4NA.MTU5NDU1NDQ1MTE4Mw.Njk0OTdkZTMwYzYyY2JhMTNjNWRlYTdiY2RjM2M4YTEwZGM4MmRiZGU4MGExYjQ5NWU0NzhiYzQ2ODhhM2RkYg').send();
-});
-
 readdir(join(__dirname, 'routers')).then(async versions => {
 	for (const version of versions) {
 		const router = require(`./routers/${version}`);
