@@ -4,7 +4,6 @@ const { getTokenOwner } = require('../../../../lib/util');
 module.exports = {
 	run: async (req, res) => {
 		if (!req.cookies.access_token) { return res.status(400).send(); }
-		console.log(req.app.locals.redis.get(req.cookies.access_token));
 		// should check if the token is valid in the first place
 		const tokens = await centra('https://discord.com/api/oauth2/token', 'POST')
 			.body({
