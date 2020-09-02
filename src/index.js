@@ -2,18 +2,21 @@ const express = require('express');
 const Loggaby = require('loggaby');
 const cookieParser = require('cookie-parser');
 const snowflakey = require('snowflakey');
-const redis = require('redis');
+const RedisClient = require('ioredis');
 const { MongoClient } = require('mongodb');
 const { constants } = require('../lib/util');
 const logger = new Loggaby();
-require('dotenv').config();
-const port = parseInt(process.env.API_PORT);
+const cors = require('cors');
 
+require('dotenv').config();
+
+const port = parseInt(process.env.API_PORT || 3307);
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+app.use(cors());
 
-MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
+MongoClient.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017', { useUnifiedTopology: true, useNewUrlParser: true }, (err, client) => {
 	if (err) {
 		logger.error(`mongo connection failed: ${err}`);
 		process.exit();
@@ -21,6 +24,7 @@ MongoClient.connect(process.env.MONGODB_URI, { useUnifiedTopology: true, useNewU
 	logger.log('connected to database');
 	app.locals.db = client.db('profileplace');
 });
+
 app.locals.snowflakeWorker = new snowflakey.Worker({
 	epoch: constants.epoch,
 	workerId: 28,
@@ -29,9 +33,16 @@ app.locals.snowflakeWorker = new snowflakey.Worker({
 	processBits: 0,
 	incrementBits: 14
 });
-app.locals.redis = redis.createClient();
 
-app.locals.redis.on('ready', () => logger.log('connected to redis'));
+app.locals.redis = new RedisClient({
+	host: process.env.REDIS_HOST || 'localhost',
+	port: Number(process.env.REDIS_PORT) || 6379,
+	password: process.env.REDIS_PASSWORD,
+	db: Number(process.env.REDIS_DATABASE) || 9,
+	lazyConnect: true
+});
+
+app.locals.redis.once('ready', () => logger.log('connected to redis'));
 
 const { readdir } = require('fs').promises;
 const { join } = require('path').posix;
@@ -53,7 +64,14 @@ readdir(join(__dirname, 'routers')).then(async versions => {
 		console.error(`500 at ${req.path}: ${err}`);
 	});
 
-	app.listen(port, () => {
+	app.listen(port, async () => {
+		try {
+			await app.locals.redis.connect();
+		} catch (ex) {
+			logger.error(`unable to connect to redis:\n${ex}`);
+			process.exit();
+		}
+
 		logger.log(`API listening on port ${port}`);
 		logger.log(`Versions loaded: ${versions.join(', ')}`);
 	});
